@@ -3,15 +3,17 @@ document.addEventListener('DOMContentLoaded', function() {
     var result = document.getElementById('result');
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          result.textContent = xhr.responseText;
-        } else {
-          result.textContent = 'サーバエラーが発生しました。';
-        }
-      } else {
+      xhr.addEventListener('loadstart', function() {
         result.textContent = '通信中...';
-      }
+      }, false);
+
+      xhr.addEventListener('load', function() {
+        result.textContent = xhr.responseText;
+      }, false);
+
+      xhr.addEventListener('error', function() {
+        result.textContent = 'サーバエラーが発生しました。';
+      }, false);
     };
     xhr.open('GET', 'hello_ajax.php?name=' +
       encodeURIComponent(document.getElementById('name').value), true);
