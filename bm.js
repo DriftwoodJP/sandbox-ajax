@@ -1,25 +1,8 @@
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('btn').addEventListener('click', function() {
-    var result = document.getElementById('result');
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      xhr.addEventListener('loadstart', function() {
-        result.textContent = '通信中...';
-      }, false);
-
-      xhr.addEventListener('load', function() {
-        var data = JSON.parse(xhr.responseText);
-        show(data);
-      }, false);
-
-      xhr.addEventListener('error', function() {
-        result.textContent = 'サーバエラーが発生しました。';
-      }, false);
-    };
-    xhr.open('GET', 'bm.php?url=' +
-      encodeURIComponent(document.getElementById('url').value), true);
-    xhr.send(null);
-  }, false);
+document.getElementById('btn').addEventListener('click', function() {
+  var url = 'http://b.hatena.ne.jp/entry/jsonlite/?callback=show&url=' + encodeURIComponent(document.getElementById('url').value);
+  var src = document.createElement('script');
+  src.src = url;
+  document.getElementsByTagName('body').item(0).appendChild(src);
 }, false);
 
 function show(data) {
@@ -38,6 +21,6 @@ function show(data) {
       li.appendChild(anchor);
       ul.appendChild(li);
     }
-    result.replaceChild(ul, result.firstChild);
+    result.appendChild(ul);
   }
 }
